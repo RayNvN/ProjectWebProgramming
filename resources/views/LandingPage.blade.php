@@ -17,7 +17,7 @@
                 <h1 style="color: white; font-family: Inter; font-size: 38px; font-style: normal; font-weight: 700; line-height: 49px; " >Lorem</h1>
             </div>
             <div class="col text-end">
-                <button type="button" class="btn btn-light" 
+                <button type="button" class="btn btn-light"
                 style="color: black; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 700; line-height: 26px; border-radius: 8px; border: 1px solid #000; width: 145px; height: 62px;">Sign Up
                 </button>
             </div>
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        
+
         <div class="row text-center">
             <div class="col-12 mt-2" style="width: 100%;">
                 <div class="badge text-wrap" style="width: 850px; color: white; font-family: Inter; font-size: 24px; font-style: normal; font-weight: 400; line-height: 32px; text-align: center;" >
@@ -125,7 +125,7 @@
                     <h1 style="color: white; font-family: Inter; font-size: 48px; font-style: normal; font-weight: 700; line-height: 64px; width:100%; height: 64px" >Benefits</h1>
                 </div>
             </div>
-        
+
             <div class="row text-center">
                 <div class="col-12 mt-2" style="width: 100%;">
                     <div class="badge text-wrap" style="width: 929px; color: white; font-family: Inter; font-size: 24px; font-style: normal; font-weight: 400; line-height: 32px; text-align: center;" >
@@ -155,7 +155,7 @@
                         <p>Easily manage employee schedules and conduct insightful performance reviews to foster growth and ensure operational efficiency.</p>
                     </button>
                 </div>
-            </div>    
+            </div>
         </div>
     </div>
 
@@ -169,7 +169,7 @@
                 <h1 style="color: white; font-family: Inter; font-size: 48px; font-style: normal; font-weight: 700; line-height: 64px; width:100%; height: 64px" >Membership Levels</h1>
             </div>
         </div>
-        
+
         <div class="row text-center">
             <div class="col-12 mt-2" style="width: 100%;">
                 <div class="badge text-wrap" style="width: 960px; color: white; font-family: Inter; font-size: 24px; font-style: normal; font-weight: 400; line-height: 32px; text-align: center;" >
@@ -236,8 +236,8 @@
 
             <div class="row text-center" style="align-item: center;">
                 <div class="col mt-3">
-                    <p style="color: white; text-align: center; font-family: Inter; font-size: 30.484px; font-style: normal; font-weight: 500; line-height: 40.646px;">"Incredible experience! The website is not only visually stunning but also user-friendly. Navigating through the pages was a breeze, and I found all 
-                        the information I needed quickly. The attention to detail in both design and functionality is impressive. I would highly recommend this site to anyone 
+                    <p style="color: white; text-align: center; font-family: Inter; font-size: 30.484px; font-style: normal; font-weight: 500; line-height: 40.646px;">"Incredible experience! The website is not only visually stunning but also user-friendly. Navigating through the pages was a breeze, and I found all
+                        the information I needed quickly. The attention to detail in both design and functionality is impressive. I would highly recommend this site to anyone
                         looking for a seamless online experience!"— Sarah M., Satisfied User
                     </p>
                 </div>
