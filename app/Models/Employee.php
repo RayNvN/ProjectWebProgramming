@@ -22,4 +22,9 @@ class Employee extends Model
     {
         return $this->hasMany(Payroll::class, 'employee_id');
     }
+
+    public function timeoffs()
+    {
+        return $this->hasMany(TimeOff::class, 'employee_id');
+    }
 }

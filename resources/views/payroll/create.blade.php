@@ -4,12 +4,23 @@
     @csrf
 
     <!-- Employee Dropdown -->
-    <div class="form-select" name="employee_id" required>
-        <option value="">Select Employee</option>
-        @foreach($employees as $employee)
-            <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-        @endforeach
+    <div class="mb-3">
+        <label for="employee_id" class="form-label">Employee</label>
+        <select class="form-select" name="employee_id" id="employee_id" required>
+            <option value="">Select Employee</option>
+            @foreach($employees as $employee)
+                <option value="{{ $employee->id }}" data-name="{{ $employee->employee_name }}">{{ $employee->employee_name }}</option>
+            @endforeach
+        </select>
     </div>
+
+
+    <!-- Employee Name (This will be automatically filled based on the selected employee) -->
+    <div class="mb-3">
+        <label for="employee_name" class="form-label">Employee Name</label>
+        <input type="text" class="form-control" name="employee_name" id="employee_name" readonly>
+    </div>
+
 
     <!-- Photo Upload -->
     <div class="mb-3">
@@ -59,3 +70,10 @@
     <!-- Submit Button -->
     <button type="submit" class="btn btn-primary">Create Payroll</button>
 </form>
+
+<script>
+    document.getElementById('employee_id').addEventListener('change', function() {
+        var selectedOption = this.options[this.selectedIndex];
+        document.getElementById('employee_name').value = selectedOption.getAttribute('data-name');
+    });
+</script>

@@ -86,7 +86,7 @@
                     <tbody>
                         @foreach($payrolls as $payroll)
                         <tr>
-                            <td>{{ $payroll->employee->name }} ({{ $payroll->employee->employee_id }})</td>
+                            <td>{{ $payroll->employee->employee_name }} ({{ $payroll->employee->id }})</td>
                             <td>{{ $payroll->start_date }}</td>
                             <td>{{ $payroll->end_date }}</td>
                             <td>{{ $payroll->total_days ?? 'N/A' }}</td>
@@ -97,9 +97,14 @@
                                     {{ $payroll->status }}
                                 </span>
                             </td>
-                            <td>
-                                <!-- Hapus link ke show, karena kita nggak perlu itu lagi -->
+                            <<td>
                                 <a href="{{ route('payroll.edit', $payroll->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                @if($payroll->status == 'Unpaid')
+                                    <form method="POST" action="{{ route('payroll.pay', $payroll->id) }}" style="display: inline-block;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">Pay</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
