@@ -1,5 +1,3 @@
-<!-- resources/views/payroll/create.blade.php -->
-
 <form method="POST" action="{{ route('payroll.store') }}" enctype="multipart/form-data">
     @csrf
 
@@ -14,13 +12,11 @@
         </select>
     </div>
 
-
     <!-- Employee Name (This will be automatically filled based on the selected employee) -->
     <div class="mb-3">
         <label for="employee_name" class="form-label">Employee Name</label>
         <input type="text" class="form-control" name="employee_name" id="employee_name" readonly>
     </div>
-
 
     <!-- Photo Upload -->
     <div class="mb-3">

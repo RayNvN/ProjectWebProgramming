@@ -58,3 +58,22 @@ Route::delete('timeoffs/{id}', [TimeOffController::class, 'destroy'])->name('tim
 
 Route::put('/timeoffs/{id}/approve', [TimeOffController::class, 'approve'])->name('timeoffs.approve');
 Route::put('/timeoffs/{id}/reject', [TimeOffController::class, 'reject'])->name('timeoffs.reject');
+
+
+Route::get('/Nexa', function () {
+    return view('LandingPage');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
+
+require __DIR__ . '/auth.php';
