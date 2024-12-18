@@ -22,11 +22,8 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <!-- Header -->
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Manage Employees</h1>
-                <div class="d-flex align-items-center">
-                    <button class="btn btn-outline-primary me-3">Profile</button>
-                    <button class="btn btn-outline-danger">Notifications</button>
-                </div>
+                <h1 class="h2" style="color: #ffffff">Manage Employees</h1>
+                
             </div>
 
             <!-- Add Employee Button -->
@@ -39,13 +36,13 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Employee Name</th>
-                            <th>Phone Number</th>
-                            <th>Department</th>
-                            <th>Job Title</th>
-                            <th>Contract Type</th>
-                            <th>Attendance</th>
-                            <th>Actions</th>
+                            <th style="color: white">Employee Name</th>
+                            <th style="color: white">Phone Number</th>
+                            <th style="color: white">Department</th>
+                            <th style="color: white">Job Title</th>
+                            <th style="color: white">Contract Type</th>
+                            <th style="color: white">Attendance</th>
+                            <th style="color: white">Actions</th>
                         </tr>
                     </thead>
                     <tbody>

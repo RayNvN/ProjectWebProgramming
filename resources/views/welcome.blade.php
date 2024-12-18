@@ -32,7 +32,7 @@
                                     @auth
                                         <a
                                             href="{{ url('/dashboard') }}"
-                                            class="rounded-md px-3 py-2 dtext-white hover:text-white/80 focus-visible:ring-white"
+                                            class="btn btn-light"
                                             style="color: black; font-family: Inter; font-size: 20px; font-style: normal; font-weight: 700; line-height: 26px; border-radius: 8px; border: 1px solid #000; width: 145px; height: 62px;"
                                         >
                                             Dashboard

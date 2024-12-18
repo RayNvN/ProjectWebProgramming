@@ -90,16 +90,16 @@
             <ul class="nav flex-column">
                 <h3 class="fw-bold text-center text-light mb-4 text-4xl">Nexa</h3>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-light">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="nav-link text-light">Dashboard</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-light">Employee Management</a>
+                    <a href="{{ route('employees.index') }}" class="nav-link text-light">Employee Management</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-light">Homepage</a>
+                    <a href="{{ route('Homepage') }}" class="nav-link text-light">Homepage</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-light">Payroll Page</a>
+                    <a href="{{ route('payroll.index') }}" class="nav-link text-light">Payroll Page</a>
                 </li>
                 <li class="nav-item mb-2">
                     <a href="#" class="nav-link text-light">Recruitment Page</a>

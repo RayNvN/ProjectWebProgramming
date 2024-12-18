@@ -9,10 +9,10 @@
                 <h4>Menu</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Dashboard</a>
+                        <a class="nav-link active" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Payroll</a>
+                        <a class="nav-link" href="{{ route('payroll.index') }}">Payroll</a>
                     </li>
                 </ul>
             </div>

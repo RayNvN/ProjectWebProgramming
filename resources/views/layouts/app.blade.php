@@ -15,39 +15,13 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Custom Styles -->
-    <style>
-        body {
-            background-color: #121212;
-            color: #2c2a2a;
-        }
-        .table-header {
-            background-color: #7a5af5;
-            color: #ffffff;
-        }
-        .employee-card {
-            background-color: #1e1e1e;
-            color: #ffffff;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .employee-card img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-        }
-        .see-detail-btn {
-            background-color: transparent;
-            border: 1px solid #6c757d;
-            color: #ffffff;
-        }
-    </style>
+    
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div class="min-h-screen bg-gray-100">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
@@ -62,7 +36,7 @@
         <!-- Page Content -->
         <main>
             @yield('content')
-            {{ $slot }}
+            {{-- {{ $slot }} --}}
         </main>
     </div>
 

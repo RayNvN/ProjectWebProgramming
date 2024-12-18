@@ -1,3 +1,5 @@
+<?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,12 +11,12 @@ class AuthController extends Controller
 {
     public function login()
     {
-        return view('login'); // pastikan file login.blade.php ada di resources/views
+        return view('Login'); // pastikan file login.blade.php ada di resources/views
     }
 
     public function signup()
     {
-        return view('signup'); // pastikan file signup.blade.php ada di resources/views
+        return view('Signup'); // pastikan file signup.blade.php ada di resources/views
     }
 
     public function signupStore(Request $request)
