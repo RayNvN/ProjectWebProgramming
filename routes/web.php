@@ -6,6 +6,7 @@ use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TimeOffController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\AdminDashboardController;
 
 Route::get('/', function () {
@@ -77,5 +78,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
+
+
+Route::get('/jobs', [JobController::class, 'index'])->middleware(['auth', 'verified'])->name('jobs.index');
+Route::get('/jobs/create', [JobController::class, 'create'])->middleware(['auth', 'verified'])->name('jobs.create');
+Route::post('/jobs', [JobController::class, 'store'])->middleware(['auth', 'verified'])->name('jobs.store');
+Route::resource('jobs', JobController::class)->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';
