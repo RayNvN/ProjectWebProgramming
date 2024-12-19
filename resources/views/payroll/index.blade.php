@@ -90,7 +90,7 @@
             <ul class="nav flex-column">
                 <h3 class="fw-bold text-center text-light mb-4 text-4xl">Nexa</h3>
                 <li class="nav-item mb-2">
-                    <a href="{{ route('dashboard') }}" class="nav-link text-light">Dashboard</a>
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link text-light">Dashboard</a>
                 </li>
                 <li class="nav-item mb-2">
                     <a href="{{ route('employees.index') }}" class="nav-link text-light">Employee Management</a>
@@ -102,7 +102,7 @@
                     <a href="{{ route('payroll.index') }}" class="nav-link text-light">Payroll Page</a>
                 </li>
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-light">Recruitment Page</a>
+                    <a href="{{ route('jobs.index')}}" class="nav-link text-light">Recruitment Page</a>
                 </li>
             </ul>
         </div>

@@ -68,7 +68,7 @@ Route::get('/Nexa', function () {
 })->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -77,7 +77,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->middleware(['auth', 'verified'])->name('profile.destroy');
 });
 
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
 
 Route::get('/jobs', [JobController::class, 'index'])->middleware(['auth', 'verified'])->name('jobs.index');

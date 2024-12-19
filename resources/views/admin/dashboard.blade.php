@@ -17,17 +17,17 @@
         <div class="p-3">
             <h3 class="fw-bold mt-3 text-center text-light">Nexa</h3>
             <ul class="list-unstyled">
-                <li class="mb-2 mt-5"><a href="#" class="text-decoration-none text-light">Dashboard</a></li>
-                <li class="mb-2"><a href="#" class="text-decoration-none text-light">Employee Management</a></li>
-                <li class="mb-2"><a href="#" class="text-decoration-none text-light">Homepage</a></li>
-                <li class="mb-2"><a href="#" class="text-decoration-none text-light">Payroll Page</a></li>
-                <li class="mb-2"><a href="#" class="text-decoration-none text-light">Recruitment Page</a></li>
+                <li class="mb-2 mt-5"><a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-light">Dashboard</a></li>
+                <li class="mb-2"><a href="{{ route('employees.index') }}" class="text-decoration-none text-light">Employee Management</a></li>
+                <li class="mb-2"><a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-light">Homepage</a></li>
+                <li class="mb-2"><a href="{{ route('payroll.index') }}" class="text-decoration-none text-light">Payroll Page</a></li>
+                <li class="mb-2"><a href="{{ route('jobs.index') }}" class="text-decoration-none text-light">Recruitment Page</a></li>
             </ul>
         </div>
     </div>
 
     <!-- topbar -->
-    <nav class="navbar navbar-dark border-bottom border-dark fixed-top" style="z-index: 0; background-color: #343a40; color: #fff;">
+    <nav class="navbar navbar-dark border-bottom border-dark fixed-top" style="z-index: 100; background-color: #343a40; color: #fff;">
         <div class="container-fluid d-flex justify-content-between">
             <div class="d-flex align-items-center" style="margin-left: 185px;">
                 <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-circle me-2">
@@ -44,9 +44,14 @@
                 </form>
 
                 <!-- logout -->
-                <button class="btn">
-                    <i class="bi bi-box-arrow-right text-white"></i>
-                </button>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <button class="btn">
+                        <i class="bi bi-box-arrow-right text-white"></i>
+                    </button>
+                </form>
+                
 
             </div>
         </div>
