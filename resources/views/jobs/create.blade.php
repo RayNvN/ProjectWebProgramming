@@ -1,95 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Job</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-<body class="bg-gray-100">
-    @include('jobs.header')
+@extends('layouts.app')
 
-    <div class="container mx-auto px-4 py-8">
-        <div class="max-w-2xl mx-auto">
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-semibold mb-6">Add New Job</h2>
-                
-                <form action="{{ route('jobs.store') }}" method="POST">
-                    @csrf
-                    
-                    <div class="space-y-6">
-                        <!-- Title -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                Job Title
-                            </label>
-                            <input type="text" 
-                                   name="title" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                            </input>
-                        </div>
+@section('title', 'Nexa - Add Job')
 
-                        <!-- Description -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                Description
-                            </label>
-                            <textarea name="description" 
-                                      rows="4" 
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                            </textarea>
-                        </div>
-
-                        <!-- Job Type -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                Job Type
-                            </label>
-                            <select name="type" 
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                                <option value="Full Time">Full Time</option>
-                                <option value="Part Time">Part Time</option>
-                                <option value="Contract">Contract</option>
-                                <option value="Freelance">Freelance</option>
-                            </select>
-                        </div>
-
-                        <!-- Active Until -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                Active Until
-                            </label>
-                            <input type="date" 
-                                   name="active_until" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                            </input>
-                        </div>
-
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                is  active
-                            </label>
-                            <select name="is_active" 
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                                    <option value="1">True</option>
-                                    <option value="0">False</option>
-                            </select>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="flex justify-end">
-                            <button type="submit" 
-                                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                                Post Job
-                            </button>
-                            <a href="{{ route('jobs.index')}}" class="ms-3 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"> cancel </a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+@section('content')
+<div class="max-w-2xl mx-auto">
+    <!-- Header Page -->
+    <div class="mb-8">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white">Add New Job Post</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Fill in the details to publish a new job posting on the recruitment portal</p>
     </div>
-</body>
-</html>
+
+    <!-- Form Card -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl shadow-sm">
+        <form action="{{ route('jobs.store') }}" method="POST" class="space-y-6">
+            @csrf
+            
+            <!-- Job Title -->
+            <div>
+                <x-input-label for="title" :value="__('Job Title')" />
+                <x-text-input id="title" type="text" name="title" required placeholder="e.g. Lead Product Designer" />
+            </div>
+
+            <!-- Description -->
+            <div>
+                <x-input-label for="description" :value="__('Job Description')" />
+                <textarea name="description" id="description" rows="5" required placeholder="Write job requirements, roles, and benefits here..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all placeholder-slate-450 dark:placeholder-slate-600"></textarea>
+            </div>
+
+            <!-- Job Type -->
+            <div>
+                <x-input-label for="type" :value="__('Job Type')" />
+                <select name="type" id="type" required class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all">
+                    <option value="Full Time">Full Time</option>
+                    <option value="Part Time">Part Time</option>
+                    <option value="Contract">Contract</option>
+                    <option value="Freelance">Freelance</option>
+                </select>
+            </div>
+
+            <!-- Active Until -->
+            <div>
+                <x-input-label for="active_until" :value="__('Active Until')" />
+                <x-text-input type="date" name="active_until" id="active_until" required />
+            </div>
+
+            <!-- Is Active -->
+            <div>
+                <x-input-label for="is_active" :value="__('Status')" />
+                <select name="is_active" id="is_active" required class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all">
+                    <option value="1">Active</option>
+                    <option value="0">Draft</option>
+                </select>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end space-x-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                <a href="{{ route('jobs.index') }}" class="px-5 py-3 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors">
+                    Cancel
+                </a>
+                <x-primary-button class="w-auto">
+                    Post Job
+                </x-primary-button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

@@ -1,84 +1,106 @@
-<form method="POST" action="{{ route('payroll.update', $payroll->id) }}" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
+@extends('layouts.app')
 
-    <!-- Employee Dropdown -->
-    <div class="mb-3">
-        <label for="employee_id" class="form-label">Employee</label>
-        <select class="form-select mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" name="employee_id" id="employee_id" required>
-            @foreach($employees as $employee)
-                <option value="{{ $employee->id }}"
-                    data-name="{{ $employee->employee_name }}"
-                    {{ $employee->id == $payroll->employee_id ? 'selected' : '' }}>
-                    {{ $employee->employee_name }}
-                </option>
-            @endforeach
-        </select>
+@section('title', 'Nexa - Edit Payroll')
+
+@section('content')
+<div class="max-w-2xl mx-auto">
+    <!-- Header Page -->
+    <div class="mb-8">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white">Edit Payroll Invoice</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Modify invoice details for selected employee payroll</p>
     </div>
 
-    <!-- Employee Name (Auto-filled) -->
-    <div class="mb-3">
-        <label for="employee_name" class="form-label">Employee Name</label>
-        <input type="text" class="form-control mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" name="employee_name" id="employee_name" value="{{ $payroll->employee_name }}" readonly>
-    </div>
+    <!-- Form Card -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl shadow-sm">
+        <form method="POST" action="{{ route('payroll.update', $payroll->id) }}" enctype="multipart/form-data" class="space-y-6">
+            @csrf
+            @method('PUT')
 
-    <!-- Photo Upload -->
-    <div class="mb-3">
-        <label for="photo" class="form-label">Photo</label>
-        <input type="file" class="form-control mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" name="photo" accept="image/*">
-        <small class="text-gray-500">Leave blank to keep the current photo.</small>
-    </div>
+            <!-- Employee Dropdown -->
+            <div>
+                <x-input-label for="employee_id" :value="__('Select Employee')" />
+                <select name="employee_id" id="employee_id" required class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all">
+                    @foreach($employees as $employee)
+                        <option value="{{ $employee->id }}"
+                            data-name="{{ $employee->employee_name }}"
+                            {{ $employee->id == $payroll->employee_id ? 'selected' : '' }}>
+                            {{ $employee->employee_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-    <!-- Start Date -->
-    <div class="mb-3">
-        <label for="start_date" class="form-label">Start Date</label>
-        <input type="date" class="form-control mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" name="start_date" value="{{ $payroll->start_date }}" required>
-    </div>
+            <!-- Employee Name -->
+            <div>
+                <x-input-label for="employee_name" :value="__('Employee Name')" />
+                <x-text-input type="text" name="employee_name" id="employee_name" value="{{ $payroll->employee_name }}" readonly />
+            </div>
 
-    <!-- End Date -->
-    <div class="mb-3">
-        <label for="end_date" class="form-label">End Date</label>
-        <input type="date" class="form-control mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" name="end_date" value="{{ $payroll->end_date }}" required>
-    </div>
+            <!-- Photo Upload -->
+            <div>
+                <x-input-label for="photo" :value="__('Upload Receipt / Photo (Optional)')" />
+                <input type="file" name="photo" id="photo" accept="image/*" class="w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 dark:file:bg-indigo-950/40 dark:file:text-indigo-400 hover:file:bg-indigo-100 transition-all cursor-pointer border border-slate-200 dark:border-slate-800 rounded-xl p-2 bg-slate-50 dark:bg-slate-950">
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">Leave blank to keep the current photo.</p>
+            </div>
 
-    <!-- Total Days -->
-    <div class="mb-3">
-        <label for="total_days" class="form-label">Total Days</label>
-        <input type="number" class="form-control mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" name="total_days" value="{{ $payroll->total_days }}" required>
-    </div>
+            <!-- Date Range -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <x-input-label for="start_date" :value="__('Start Date')" />
+                    <x-text-input type="date" name="start_date" id="start_date" value="{{ $payroll->start_date }}" required />
+                </div>
+                <div>
+                    <x-input-label for="end_date" :value="__('End Date')" />
+                    <x-text-input type="date" name="end_date" id="end_date" value="{{ $payroll->end_date }}" required />
+                </div>
+            </div>
 
-    <!-- Total Hours -->
-    <div class="mb-3">
-        <label for="total_hours" class="form-label">Total Hours</label>
-        <input type="number" class="form-control mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" name="total_hours" value="{{ $payroll->total_hours }}" required>
-    </div>
+            <!-- Total Days & Hours -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <x-input-label for="total_days" :value="__('Total Days')" />
+                    <x-text-input type="number" name="total_days" id="total_days" value="{{ $payroll->total_days }}" required />
+                </div>
+                <div>
+                    <x-input-label for="total_hours" :value="__('Total Hours')" />
+                    <x-text-input type="number" name="total_hours" id="total_hours" value="{{ $payroll->total_hours }}" required />
+                </div>
+            </div>
 
-    <!-- Invoice Amount -->
-    <div class="mb-3">
-        <label for="invoice_amount" class="form-label">Invoice Amount</label>
-        <input type="number" step="0.01" class="form-control mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" name="invoice_amount" value="{{ $payroll->invoice_amount }}" required>
-    </div>
+            <!-- Invoice Amount -->
+            <div>
+                <x-input-label for="invoice_amount" :value="__('Invoice Amount ($)')" />
+                <x-text-input type="number" step="0.01" name="invoice_amount" id="invoice_amount" value="{{ $payroll->invoice_amount }}" required />
+            </div>
 
-    <!-- Status -->
-    <div class="mb-3">
-        <label for="status" class="form-label">Status</label>
-        <select class="form-select mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" name="status" required>
-            <option value="Paid" {{ $payroll->status == 'Paid' ? 'selected' : '' }}>Paid</option>
-            <option value="Unpaid" {{ $payroll->status == 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
-        </select>
-    </div>
+            <!-- Status -->
+            <div>
+                <x-input-label for="status" :value="__('Status')" />
+                <select name="status" id="status" required class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all">
+                    <option value="Paid" {{ $payroll->status == 'Paid' ? 'selected' : '' }}>Paid</option>
+                    <option value="Unpaid" {{ $payroll->status == 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
+                </select>
+            </div>
 
-    <!-- Submit Button -->
-    <div class="mb-6">
-        <button type="submit" class="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-            Update Payroll
-        </button>
+            <!-- Actions -->
+            <div class="flex items-center justify-end space-x-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                <a href="{{ route('payroll.index') }}" class="px-5 py-3 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors">
+                    Cancel
+                </a>
+                <x-primary-button class="w-auto">
+                    Update Payroll
+                </x-primary-button>
+            </div>
+        </form>
     </div>
-</form>
+</div>
 
 <script>
-    document.getElementById('employee_id').addEventListener('change', function() {
-        var selectedOption = this.options[this.selectedIndex];
-        document.getElementById('employee_name').value = selectedOption.getAttribute('data-name');
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('employee_id').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            document.getElementById('employee_name').value = selectedOption.getAttribute('data-name') || '';
+        });
     });
 </script>
+@endsection

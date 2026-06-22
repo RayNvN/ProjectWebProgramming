@@ -1,375 +1,282 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-</head>
+@section('title', 'Nexa - HR Dashboard')
 
-<body class="bg-dark text-light">
-    <!-- Sidebar -->
-    <div class="border-end position-fixed border-light" style="width: 180px; height: 100vh; left: 0; top: 0; z-index: 1; background-color: #343a40; color: #fff;">
-        <div class="p-3">
-            <h3 class="fw-bold mt-3 text-center text-light">Nexa</h3>
-            <ul class="list-unstyled">
-                <li class="mb-2 mt-5"><a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-light">Dashboard</a></li>
-                <li class="mb-2"><a href="{{ route('employees.index') }}" class="text-decoration-none text-light">Employee Management</a></li>
-                <li class="mb-2"><a href="{{ route('admin.dashboard') }}" class="text-decoration-none text-light">Homepage</a></li>
-                <li class="mb-2"><a href="{{ route('payroll.index') }}" class="text-decoration-none text-light">Payroll Page</a></li>
-                <li class="mb-2"><a href="{{ route('jobs.index') }}" class="text-decoration-none text-light">Recruitment Page</a></li>
-            </ul>
+@section('content')
+<!-- Include Chart.js via CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="space-y-8 animate-fade-in">
+    <!-- Top Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card Attendance -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm flex items-center justify-between transition-all hover:shadow-md">
+            <div>
+                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Today Attendance</p>
+                <h3 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-2">482</h3>
+                <p class="text-xs text-emerald-500 font-medium mt-1">Active on duty</p>
+            </div>
+            <div class="p-4 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-2xl text-2xl">👥</div>
+        </div>
+
+        <!-- Card Absent -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm flex items-center justify-between transition-all hover:shadow-md">
+            <div>
+                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Absent Employees</p>
+                <h3 class="text-3xl font-extrabold text-rose-500 dark:text-rose-400 mt-2">30</h3>
+                <p class="text-xs text-rose-400 font-medium mt-1">Excused / Unexcused</p>
+            </div>
+            <div class="p-4 bg-rose-50 dark:bg-rose-950/40 text-rose-500 dark:text-rose-400 rounded-2xl text-2xl">⚠️</div>
+        </div>
+
+        <!-- Card Late -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm flex items-center justify-between transition-all hover:shadow-md">
+            <div>
+                <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Late Check-ins</p>
+                <h3 class="text-3xl font-extrabold text-amber-500 dark:text-amber-400 mt-2">51</h3>
+                <p class="text-xs text-amber-500 font-medium mt-1">Requires follow-up</p>
+            </div>
+            <div class="p-4 bg-amber-50 dark:bg-amber-950/40 text-amber-500 dark:text-amber-400 rounded-2xl text-2xl">⏱️</div>
         </div>
     </div>
 
-    <!-- topbar -->
-    <nav class="navbar navbar-dark border-bottom border-dark fixed-top" style="z-index: 100; background-color: #343a40; color: #fff;">
-        <div class="container-fluid d-flex justify-content-between">
-            <div class="d-flex align-items-center" style="margin-left: 185px;">
-                <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-circle me-2">
-                <div class="d-flex flex-column">
-                    <span class="fw-bold">Aulia Yasmin</span>
-                    <span class="text-light fs-6">HR Manager</span>
-                </div>
+    <!-- Main Chart Section -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Applications Received</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Monthly overview of candidate profiles</p>
             </div>
-
-            <div class="d-flex align-items-center">
-                <form class="d-flex me-2 position-relative">
-                    <input class="form-control ps-5" type="search" placeholder="Search for..." aria-label="Search">
-                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-dark"></i>
-                </form>
-
-                <!-- logout -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <button class="btn">
-                        <i class="bi bi-box-arrow-right text-white"></i>
-                    </button>
-                </form>
-                
-
-            </div>
+            <select id="timeRangeSelector" class="px-4 py-2 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none">
+                <option value="1month">Last Month</option>
+                <option value="6months">6 Months</option>
+                <option value="1year" selected>1 Year</option>
+                <option value="all">All Time</option>
+            </select>
         </div>
-    </nav>
+        <div class="relative h-[320px]">
+            <canvas id="applicationsChart"></canvas>
+        </div>
+    </div>
 
-    <div class="container mt-5" style="position:relative; margin-left: 250px; margin-top: 100px; z-index: 0;">
-        <!-- keterangan info -->
-        <div class="d-flex justify-content-center align-items-center" style="margin-top: 20px; margin-bottom: 20px;">
-            <div class="card mt-4" style="width: 260px; height: 70px; background-color: #343a40; color: #fff;">
-                <div class="card-body p-2">
-                    <div class="row text-center h-100">
-                        <div class="col border-end d-flex flex-column align-items-center justify-content-center">
-                            <span class="fw-semibold">30</span>
-                            <span class="fw-bold">Absent</span>
-                        </div>
-                        <div class="col border-end d-flex flex-column align-items-center justify-content-center">
-                            <span class="fw-semibold">482</span>
-                            <span class="fw-bold">Attendance</span>
-                        </div>
-                        <div class="col d-flex flex-column align-items-center justify-content-center">
-                            <span class="fw-semibold">51</span>
-                            <span class="fw-bold">Late</span>
-                        </div>
-                    </div>
-                </div>
+    <!-- Sub Stats & Pie Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Card 1 -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm flex flex-col justify-between items-center text-center">
+            <div>
+                <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Employee</h4>
+                <p class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">563</p>
+                <p class="text-xs text-emerald-500 mt-1">↑ 10% Increase</p>
+            </div>
+            <div class="w-32 h-32 mt-4 flex items-center justify-center relative">
+                <canvas id="totalEmployeeChart"></canvas>
             </div>
         </div>
 
-        <!-- dashboard content -->
-        <div class="row mb-3">
-            <div class="row mb-3">
-                <div class="col-12 d-flex justify-content-between align-items-center mb-3">
-                    <h6 class="mb-0 text-light">Applications Received</h6>
-                    <select id="timeRangeSelector" class="form-select w-auto bg-dark text-light">
-                        <option value="1month">1 Month</option>
-                        <option value="6months">6 Months</option>
-                        <option value="1year" selected>1 Year</option>
-                        <option value="all">All Time</option>
-                    </select>
-                </div>
-
-                <!-- chart -->
-                <div class="col-12">
-                    <div class="card shadow-sm bg-dark text-light border-light">
-                        <div class="card-body">
-                            <canvas id="applicationsChart" style="height: 300px;"></canvas>
-                        </div>
-                    </div>
-                </div>
+        <!-- Card 2 -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm flex flex-col justify-between items-center text-center">
+            <div>
+                <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Applications</h4>
+                <p class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">112</p>
+                <p class="text-xs text-emerald-500 mt-1">↑ 27% Increase</p>
+            </div>
+            <div class="w-32 h-32 mt-4 flex items-center justify-center relative">
+                <canvas id="totalApplicationsChart"></canvas>
             </div>
         </div>
 
-        <div class="row">
-            <!-- Card 1 -->
-            <div class="col-12 col-md-3 mb-3">
-                <div class="card shadow-sm bg-dark text-light">
-                    <div class="card-body">
-                        <h6 class="card-title mb-3">Total Employee</h6>
-                        <h4 class="mb-5">563</h4>
-                        <h6 class="mt-5">10% Increase</h6>
-                        <canvas id="totalEmployeeChart" width="100" height="100"></canvas>
-                    </div>
-                </div>
+        <!-- Card 3 -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm flex flex-col justify-between items-center text-center">
+            <div>
+                <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Hired Candidates</h4>
+                <p class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">70</p>
+                <p class="text-xs text-emerald-500 mt-1">↑ 4% Increase</p>
             </div>
-
-            <!-- Card 2 -->
-            <div class="col-12 col-md-3 mb-3">
-                <div class="card shadow-sm bg-dark text-light">
-                    <div class="card-body">
-                        <h6 class="card-title mb-3">Total Applications</h6>
-                        <h4 class="mb-5">112</h4>
-                        <h6 class="mt-5">27% Increase</h6>
-                        <canvas id="totalApplicationsChart" width="200" height="200"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="col-12 col-md-3 mb-3">
-                <div class="card shadow-sm bg-dark text-light">
-                    <div class="card-body">
-                        <h6 class="card-title mb-3">Hired Candidates</h6>
-                        <h4 class="mb-5">70</h4>
-                        <h6 class="mt-5">4% Increase</h6>
-                        <canvas id="hiredCandidatesChart" width="200" height="200"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="col-12 col-md-3 mb-3">
-                <div class="card shadow-sm bg-dark text-light">
-                    <div class="card-body">
-                        <h6 class="card-title mb-3">Rejected Candidates</h6>
-                        <h4 class="mb-5">42</h4>
-                        <h6 class="mt-5">13% Increase</h6>
-                        <canvas id="rejectedCandidatesChart" width="200" height="200"></canvas>
-                    </div>
-                </div>
+            <div class="w-32 h-32 mt-4 flex items-center justify-center relative">
+                <canvas id="hiredCandidatesChart"></canvas>
             </div>
         </div>
 
-        <script>
-            const allData = {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                datasets: [{
-                    label: 'Applications Received',
-                    data: [50, 75, 100, 125, 150, 200, 180, 220, 210, 230, 250, 300],
-                    borderColor: '#007BFF',
-                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            };
+        <!-- Card 4 -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm flex flex-col justify-between items-center text-center">
+            <div>
+                <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rejected Candidates</h4>
+                <p class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">42</p>
+                <p class="text-xs text-rose-500 mt-1">↓ 13% Decrease</p>
+            </div>
+            <div class="w-32 h-32 mt-4 flex items-center justify-center relative">
+                <canvas id="rejectedCandidatesChart"></canvas>
+            </div>
+        </div>
+    </div>
 
-            // filter data berdasarkan rentang waktu
-            function getFilteredData(range) {
-                let filteredLabels = [];
-                let filteredData = [];
+    <!-- Employee Performances Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+        <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-800">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Employee Performances</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Quarterly performance metrics</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+                        <th class="px-6 py-4">ID</th>
+                        <th class="px-6 py-4">Name</th>
+                        <th class="px-6 py-4">Designation</th>
+                        <th class="px-6 py-4">Performance</th>
+                        <th class="px-6 py-4">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-800/80 text-sm">
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="px-6 py-4 font-semibold">1</td>
+                        <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">John Doe</td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-400">UI/UX Designer</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-400">Good</span></td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 dark:bg-indigo-950/50 text-indigo-800 dark:text-indigo-400">Active</span></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="px-6 py-4 font-semibold">2</td>
+                        <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Jane Smith</td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-400">UI/UX Designer</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-400">Good</span></td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 dark:bg-indigo-950/50 text-indigo-800 dark:text-indigo-400">Active</span></td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="px-6 py-4 font-semibold">3</td>
+                        <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Bob Johnson</td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-400">UI/UX Designer</td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-400">Good</span></td>
+                        <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 dark:bg-indigo-950/50 text-indigo-800 dark:text-indigo-400">Active</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-                switch (range) {
-                    case '1month': // nampilin data bulan terakhir
-                        filteredLabels = [allData.labels[allData.labels.length - 1]];
-                        filteredData = [allData.datasets[0].data[allData.datasets[0].data.length - 1]];
-                        break;
-                    case '6months': // nampilin data 6 bulan terakhir
-                        filteredLabels = allData.labels.slice(-6);
-                        filteredData = allData.datasets[0].data.slice(-6);
-                        break;
-                    case '1year': // nampilin data 1 tahun terakhir
-                        filteredLabels = allData.labels;
-                        filteredData = allData.datasets[0].data;
-                        break;
-                    case 'all': //nampilin data keseluruhan
-                        filteredLabels = allData.labels;
-                        filteredData = allData.datasets[0].data;
-                        break;
-                }
+<script>
+    const allData = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        datasets: [{
+            label: 'Applications Received',
+            data: [50, 75, 100, 125, 150, 200, 180, 220, 210, 230, 250, 300],
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+            fill: true,
+            tension: 0.4
+        }]
+    };
 
-                return {
-                    labels: filteredLabels,
-                    datasets: [{
-                        label: 'Applications Received',
-                        data: filteredData,
-                        borderColor: '#007BFF',
-                        backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                };
-            }
+    function getFilteredData(range) {
+        let filteredLabels = [];
+        let filteredData = [];
 
-            // buat inisialisasi chart.js
-            const ctx = document.getElementById('applicationsChart').getContext('2d');
-            let applicationsChart = new Chart(ctx, {
-                type: 'line',
-                data: getFilteredData('1year'), // Default: 1 Tahun
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Month'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Number of Applications'
-                            },
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
+        switch (range) {
+            case '1month':
+                filteredLabels = [allData.labels[allData.labels.length - 1]];
+                filteredData = [allData.datasets[0].data[allData.datasets[0].data.length - 1]];
+                break;
+            case '6months':
+                filteredLabels = allData.labels.slice(-6);
+                filteredData = allData.datasets[0].data.slice(-6);
+                break;
+            case '1year':
+            case 'all':
+                filteredLabels = allData.labels;
+                filteredData = allData.datasets[0].data;
+                break;
+        }
 
-            document.getElementById('timeRangeSelector').addEventListener('change', function() {
-                const range = this.value;
-                applicationsChart.data = getFilteredData(range);
-                applicationsChart.update();
-            });
-            // total employee
-            const totalEmployeeChart = new Chart(document.getElementById('totalEmployeeChart'), {
-                type: 'pie',
-                data: {
-                    labels: ['Present', 'Absent'],
-                    datasets: [{
-                        data: [90, 10], // tar disini ganti pake data yang diambil dari $dataFromPHP['totalEmployees']
-                        backgroundColor: ['#4caf50', '#f44336'],
-                        borderColor: ['#ffffff', '#ffffff'],
-                        borderWidth: 2
-                    }]
-                }
-            });
+        return {
+            labels: filteredLabels,
+            datasets: [{
+                label: 'Applications Received',
+                data: filteredData,
+                borderColor: '#6366f1',
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        };
+    }
 
-            // total applications
-            const totalApplicationsChart = new Chart(document.getElementById('totalApplicationsChart'), {
-                type: 'pie',
-                data: {
-                    labels: ['Accepted', 'Rejected'],
-                    datasets: [{
-                        data: [80, 20],
-                        backgroundColor: ['#2196f3', '#ff9800'],
-                        borderColor: ['#ffffff', '#ffffff'],
-                        borderWidth: 2
-                    }]
-                }
-            });
-
-            // hired candidates
-            const hiredCandidatesChart = new Chart(document.getElementById('hiredCandidatesChart'), {
-                type: 'pie',
-                data: {
-                    labels: ['Hired', 'Not Hired'],
-                    datasets: [{
-                        data: [70, 30],
-                        backgroundColor: ['#8bc34a', '#9e9e9e'],
-                        borderColor: ['#ffffff', '#ffffff'],
-                        borderWidth: 2
-                    }]
-                }
-            });
-
-            // rejected candidates
-            const rejectedCandidatesChart = new Chart(document.getElementById('rejectedCandidatesChart'), {
-                type: 'pie',
-                data: {
-                    labels: ['Accepted', 'Rejected'],
-                    datasets: [{
-                        data: [58, 42], // contoh data doang
-                        backgroundColor: ['#ff5722', '#9e9e9e'],
-                        borderColor: ['#ffffff', '#ffffff'],
-                        borderWidth: 2
-                    }]
+    // Initialize Chart
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('applicationsChart').getContext('2d');
+        let applicationsChart = new Chart(ctx, {
+            type: 'line',
+            data: getFilteredData('1year'),
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
                 },
-            });
-        </script>
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { beginAtZero: true }
+                }
+            }
+        });
 
-        <!-- tabel employee performance -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <h4 class="text-light">Employee Performances</h4>
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Designation</th>
-                            <th>Performances</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>UI/UX Designer</td>
-                            <td>Good</td>
-                            <td>Active</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm me-2" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-danger btn-sm" title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jane Smith</td>
-                            <td>UI/UX Designer</td>
-                            <td>Good</td>
-                            <td>Active</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm me-2" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-danger btn-sm" title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Bob Johnson</td>
-                            <td>UI/UX Designer</td>
-                            <td>Good</td>
-                            <td>Active</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm me-2" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-danger btn-sm" title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        document.getElementById('timeRangeSelector').addEventListener('change', function() {
+            applicationsChart.data = getFilteredData(this.value);
+            applicationsChart.update();
+        });
 
-    </div>
+        // PIE CHARTS
+        new Chart(document.getElementById('totalEmployeeChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Present', 'Absent'],
+                datasets: [{
+                    data: [90, 10],
+                    backgroundColor: ['#10b981', '#f43f5e'],
+                    borderWidth: 0
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+        new Chart(document.getElementById('totalApplicationsChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Accepted', 'Rejected'],
+                datasets: [{
+                    data: [80, 20],
+                    backgroundColor: ['#6366f1', '#f59e0b'],
+                    borderWidth: 0
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
 
-</html>
+        new Chart(document.getElementById('hiredCandidatesChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Hired', 'Not Hired'],
+                datasets: [{
+                    data: [70, 30],
+                    backgroundColor: ['#10b981', '#94a3b8'],
+                    borderWidth: 0
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById('rejectedCandidatesChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Accepted', 'Rejected'],
+                datasets: [{
+                    data: [58, 42],
+                    backgroundColor: ['#f43f5e', '#94a3b8'],
+                    borderWidth: 0
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+    });
+</script>
+@endsection

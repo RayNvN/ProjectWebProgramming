@@ -1,211 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payroll Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons for search icon -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Tailwind CSS for custom styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Fixing the sidebar */
-        body {
-            margin-top: 56px; /* For the navbar */
-            padding-left: 200px; /* For content to avoid sidebar overlap */
-            background-color: #121212; /* Dark background for body */
-            color: white; /* Text color for readability */
-        }
+@section('title', 'Nexa - Manage Employees')
 
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 200px;
-            background-color: #1f1f1f; /* Darker sidebar background */
-            color: white;
-            padding-top: 20px;
-        }
-
-        .topbar {
-            position: fixed;
-            top: 0;
-            left: 200px; /* Align the top bar with the main content area */
-            right: 0;
-            width: calc(100% - 200px);
-            background-color: #1f1f1f; /* Dark background for topbar */
-            color: white;
-            padding: 10px 20px;
-            z-index: 999;
-        }
-
-        .main-content {
-            margin-top: 100px; /* Space below the top bar */
-            padding-right: 15px;
-            padding-left: 15px; /* Add some padding to the left to create space from the sidebar */
-        }
-
-        .container-fluid {
-            padding-left: 0;
-        }
-
-        /* Card styles */
-        .card {
-            background-color: #2c2c2c; /* Dark background for cards */
-            border: none; /* Remove card borders */
-        }
-
-        .table-dark {
-            background-color: #2c2c2c; /* Dark background for tables */
-            color: white; /* White text for tables */
-        }
-
-        .badge {
-            color: white;
-        }
-
-        .btn-warning {
-            background-color: #ffc107; /* Yellow for warning buttons */
-            border-color: #ffc107;
-        }
-
-        .btn-success {
-            background-color: #28a745; /* Green for success buttons */
-            border-color: #28a745;
-        }
-    </style>
-</head>
-
-<body class="bg-dark">
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="p-3">
-            <ul class="nav flex-column">
-                <h3 class="fw-bold text-center text-light mb-4 text-4xl">Nexa</h3>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link text-light">Dashboard</a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('employees.index') }}" class="nav-link text-light">Employee Management</a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('Homepage') }}" class="nav-link text-light">Homepage</a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('payroll.index') }}" class="nav-link text-light">Payroll Page</a>
-                </li>
-                <li class="nav-item mb-2">
-                    <a href="{{ route('jobs.index')}}" class="nav-link text-light">Recruitment Page</a>
-                </li>
-            </ul>
+@section('content')
+<div class="space-y-6" x-data="{ selectedEmployee: null }">
+    <!-- Header Page -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Manage Employees</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400">View and manage employee files and information</p>
         </div>
+        <a href="{{ route('employees.create') }}" class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-md transition-all duration-200">
+            Add Employee
+        </a>
     </div>
 
-    <!-- Topbar -->
-    <div class="topbar my-4 d-flex justify-content-between bg-dark">
-        <div class="d-flex align-items-center">
-            <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-circle me-2">
-            <div class="d-flex flex-column text-white">
-                <span class="fw-bold">Aulia Yasmin</span>
-                <span class="fs-6">HR Manager</span>
-            </div>
-        </div>
-
-        <div class="d-flex align-items-center">
-            <form class="d-flex me-2 position-relative">
-                <!-- Search Input with Icon Inside -->
-                <div class="position-relative">
-                    <input class="form-control ps-5 pe-5" type="search" placeholder="Search for..." aria-label="Search">
-                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-black"></i> <!-- Icon inside the input -->
-                </div>
-
-            </form>
-        </div>
-    </div>
-
-
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content bg-dark">
-        <!-- Header -->
-        
-
-        <!-- Manage Employee Title -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Manage Employee</h2>
-            <a href="{{ route('employees.create') }}" class="btn btn-success">Add Employee</a>
-        </div>
-
-        <!-- Employee Table -->
-        <div class="table-responsive">
-            <table class="table table-striped table-dark">
+    <!-- Table Card -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr>
-                        <th>Employee Name</th>
-                        <th>Phone Number</th>
-                        <th>Department</th>
-                        <th>Job Title</th>
-                        <th>Contract Type</th>
-                        <th>Attendance</th>
-                        <th>Actions</th>
+                    <tr class="bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 text-xs font-bold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+                        <th class="px-6 py-4">Employee Name</th>
+                        <th class="px-6 py-4">Phone Number</th>
+                        <th class="px-6 py-4">Department</th>
+                        <th class="px-6 py-4">Job Title</th>
+                        <th class="px-6 py-4">Contract Type</th>
+                        <th class="px-6 py-4">Attendance</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-800/80 text-sm">
                     @foreach($employees as $employee)
-                    <tr>
-                        <td>{{ $employee->employee_name }}</td>
-                        <td>{{ $employee->phone_number }}</td>
-                        <td>{{ $employee->department }}</td>
-                        <td>{{ $employee->job_title }}</td>
-                        <td>{{ $employee->contract_type }}</td>
-                        <td>{{ $employee->attendance }}</td>
-                        <td>
-                            <!-- Toggle See Detail Button -->
-                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#employeeDetailModal{{ $employee->id }}">See Detail</button>
-                        </td>
-                    </tr>
-    
-                    <!-- Modal for Employee Detail -->
-                    <div class="modal fade" id="employeeDetailModal{{ $employee->id }}" tabindex="-1" aria-labelledby="employeeDetailLabel{{ $employee->id }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="employeeDetailLabel{{ $employee->id }}">Employee Detail</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p><strong>Name:</strong> {{ $employee->employee_name }}</p>
-                                    <p><strong>Phone:</strong> {{ $employee->phone_number }}</p>
-                                    <p><strong>Department:</strong> {{ $employee->department }}</p>
-                                    <p><strong>Job Title:</strong> {{ $employee->job_title }}</p>
-                                    <p><strong>Contract Type:</strong> {{ $employee->contract_type }}</p>
-                                    <p><strong>Attendance:</strong> {{ $employee->attendance }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                            <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ $employee->employee_name }}</td>
+                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400">{{ $employee->phone_number }}</td>
+                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400">{{ $employee->department }}</td>
+                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400">{{ $employee->job_title }}</td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-55 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-400 border border-indigo-200/50 dark:border-indigo-800/30">
+                                    {{ $employee->contract_type }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/30">
+                                    {{ $employee->attendance }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button 
+                                    @click="selectedEmployee = {{ json_encode($employee) }}" 
+                                    class="inline-flex items-center justify-center px-3.5 py-1.5 text-xs font-bold text-indigo-600 hover:text-white dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-600 dark:hover:bg-indigo-600 border border-transparent rounded-lg transition-all"
+                                >
+                                    See Detail
+                                </button>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-       
 
-        <!-- Pagination -->
-        {{ $employees->links() }}
+        @if($employees->hasPages())
+            <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40">
+                {{ $employees->links() }}
+            </div>
+        @endif
+    </div>
+
+    <!-- Modal for Employee Detail using Alpine.js -->
+    <div 
+        x-show="selectedEmployee !== null" 
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        x-cloak
+    >
+        <div 
+            @click.away="selectedEmployee = null" 
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-md rounded-2xl shadow-xl overflow-hidden"
+            x-transition:enter="transition ease-out duration-300 transform"
+            x-transition:enter-start="scale-95 translate-y-4"
+            x-transition:enter-end="scale-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-200 transform"
+            x-transition:leave-start="scale-100 translate-y-0"
+            x-transition:leave-end="scale-95 translate-y-4"
+        >
+            <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Employee Profile Detail</h3>
+                <button @click="selectedEmployee = null" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-4 text-sm">
+                <div class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-800">
+                    <span class="font-semibold text-slate-500">Name</span>
+                    <span class="font-bold text-slate-900 dark:text-white" x-text="selectedEmployee?.employee_name"></span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-800">
+                    <span class="font-semibold text-slate-500">Phone</span>
+                    <span class="font-semibold text-slate-900 dark:text-white" x-text="selectedEmployee?.phone_number"></span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-800">
+                    <span class="font-semibold text-slate-500">Department</span>
+                    <span class="font-semibold text-slate-900 dark:text-white" x-text="selectedEmployee?.department"></span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-800">
+                    <span class="font-semibold text-slate-500">Job Title</span>
+                    <span class="font-semibold text-slate-900 dark:text-white" x-text="selectedEmployee?.job_title"></span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-800">
+                    <span class="font-semibold text-slate-500">Contract Type</span>
+                    <span class="font-semibold text-indigo-600 dark:text-indigo-400" x-text="selectedEmployee?.contract_type"></span>
+                </div>
+                <div class="flex justify-between items-center py-2">
+                    <span class="font-semibold text-slate-500">Attendance</span>
+                    <span class="font-semibold text-emerald-600 dark:text-emerald-400" x-text="selectedEmployee?.attendance"></span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+@endsection
